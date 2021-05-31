@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Bienvenue sur la page d'accueil !</h1>
+
+        {% if not app.user %}
+            <div class="row">
+                <div class="col-12">
+                    <h2>Inscrivez-vous !</h2>
+                    {{ form(registerForm) }}
+                </div>
+                <div class="col-12">
+                    <h2>Connectez-vous !</h2>
+                </div>
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="col-12">
+                    User connected
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

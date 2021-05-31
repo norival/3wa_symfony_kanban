@@ -18,7 +18,9 @@
                     {% for project in projects %}
                         <tr>
                             <td>
-                                <a href="{{ path('project_show', {id: project.id}) }}">{{ project.title }}</a>
+                                <a href="{{ path('project_show', {slug: project.slug}) }}">
+                                    {{ project.title }}
+                                </a>
                             </td>
                         </tr>
                     {% endfor %}

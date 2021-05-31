@@ -25,12 +25,15 @@ class ProjectController extends AbstractController
         ]);
     }
 
-    #[Route('/project/{id}', name: 'project_show')]
+    #[Route('/project/{slug}', name: 'project_show')]
     #[IsGranted('ROLE_USER')]
     public function show(Project $project): Response
     {
+        $tasks = $project->getTasks();
+
         return $this->render('project/show.html.twig', [
             'project' => $project,
+            'tasks' => $tasks,
         ]);
     }
 }

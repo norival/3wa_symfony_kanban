@@ -9,7 +9,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -23,7 +26,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/register', name: 'security_register')]
-    public function index(Request $request): Response
+    public function index(Request $request, MailerInterface $mailer): Response
     {
         $user = new User();
         $form = $this->createForm(RegisterType::class, $user);
@@ -50,6 +53,17 @@ class SecurityController extends AbstractController
             $this->em->persist($user);
             $this->em->flush();
 
+            $mail = new Email();
+            $mail->from('test@norival.dev')
+                 ->to($user->getEmail())
+                 ->subject('Activate your account')
+                 ->text('Click on this link: ' . $this->generateUrl('security_activate', [
+                     'id' => $user->getId(),
+                     'token' => $user->getActivationToken(),
+                 ], UrlGeneratorInterface::ABSOLUTE_URL))
+             ;
+            $mailer->send($mail);
+
             return $this->redirectToRoute('security_login');
         }
 
@@ -66,15 +80,18 @@ class SecurityController extends AbstractController
     #[Route('/account/activate/{id}/{token}', name: 'security_activate')]
     public function activate(User $user, string $token): Response
     {
-        if ($user->setIsActif()) {
+        if ($user->getIsActif()) {
             return $this->redirectToRoute('security_login');
         }
 
         if ($user->getActivationToken() === $token) {
             $user->setIsActif(true);
+
+            $this->em->flush();
         }
 
         return $this->render('security/activation.html.twig', [
+            'actif' => $user->getIsActif(),
         ]);
     }
 

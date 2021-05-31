@@ -9,9 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=UserProjectRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class UserProject
 {
+    public const ROLE_ADMIN = 0;
+    public const ROLE_USER = 1;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -120,5 +124,13 @@ class UserProject
         $this->role = $role;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
     }
 }

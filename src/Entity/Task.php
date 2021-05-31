@@ -54,6 +54,11 @@ class Task
      */
     private $tags;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="assignedTasks")
+     */
+    private $assignees;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -156,6 +161,18 @@ class Task
     public function removeTag(Tag $tag): self
     {
         $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+    public function getAssignees(): ?User
+    {
+        return $this->assignees;
+    }
+
+    public function setAssignees(?User $assignees): self
+    {
+        $this->assignees = $assignees;
 
         return $this;
     }

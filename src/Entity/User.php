@@ -67,9 +67,15 @@ class User implements UserInterface
      */
     private $tasks;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="assignees")
+     */
+    private $assignedTasks;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
+        $this->assignedTasks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -232,6 +238,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($task->getUser() === $this) {
                 $task->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Task[]
+     */
+    public function getAssignedTasks(): Collection
+    {
+        return $this->assignedTasks;
+    }
+
+    public function addAssignedTask(Task $assignedTask): self
+    {
+        if (!$this->assignedTasks->contains($assignedTask)) {
+            $this->assignedTasks[] = $assignedTask;
+            $assignedTask->setAssignees($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssignedTask(Task $assignedTask): self
+    {
+        if ($this->assignedTasks->removeElement($assignedTask)) {
+            // set the owning side to null (unless already changed)
+            if ($assignedTask->getAssignees() === $this) {
+                $assignedTask->setAssignees(null);
             }
         }
 

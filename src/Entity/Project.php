@@ -55,6 +55,11 @@ class Project
      */
     private $users;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
@@ -204,6 +209,18 @@ class Project
     public function removeUser(User $user): self
     {
         $this->users->removeElement($user);
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

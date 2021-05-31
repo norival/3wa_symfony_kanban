@@ -5,5 +5,8 @@
 {% block body %}
     <div class="container">
         <h1>Bienvenue sur la page d'accueil !</h1>
+        {% if app.user %}
+            <a href="{{ path('project_list') }}">Projets</a>
+        {% endif %}
     </div>
 {% endblock %}

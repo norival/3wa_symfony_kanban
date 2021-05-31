@@ -3,12 +3,29 @@
 {% block title %}Hello ProjectController!{% endblock %}
 
 {% block body %}
-    {% if projects | length > 0 %}
-
-        {% for project in projects %}
-            
-        {% endfor %}
-    {% else %}
-        Aucun projet...
-    {% endif %}
+    <div class="container">
+        <div class="row">
+            {% if projects | length > 0 %}
+                <h2>Liste des projets personnels</h2>
+                <table class="table col-12">
+                    <thead>
+                        <tr>
+                            <th>
+                                Nom
+                            </th>
+                        </tr>
+                    </thead>
+                    {% for project in projects %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('project_show', {id: project.id}) }}">{{ project.title }}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                Aucun projet...
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

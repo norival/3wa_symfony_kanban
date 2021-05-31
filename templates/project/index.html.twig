@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProjectController!{% endblock %}
+
+{% block body %}
+    {% if projects | length > 0 %}
+        {% for project in projects %}
+        {% endfor %}
+    {% else %}
+        Aucun projet...
+    {% endif %}
+{% endblock %}

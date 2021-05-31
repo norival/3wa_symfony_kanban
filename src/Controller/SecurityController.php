@@ -43,6 +43,10 @@ class SecurityController extends AbstractController
                 $user->setProfilePicture($filename);
             }
 
+            $user->setActivationToken(
+                bin2hex(openssl_random_pseudo_bytes(32))
+            );
+
             $this->em->persist($user);
             $this->em->flush();
 
@@ -72,5 +76,20 @@ class SecurityController extends AbstractController
     #[Route('/logout', name: 'security_logout')]
     public function logout(): void
     {
+    }
+
+    #[Route('/account/activate/{id}/{token}', name: 'security_activate')]
+    public function activate(User $user, string $token): void
+    {
+        if ($user->setIsActif()) {
+            return $this->redirectToRoute('security_login');
+        }
+
+        if ($user->getActivationToken() === $token) {
+            $user->setIsActif(true);
+        }
+
+        return $this->render('security/activation.html.twig', [
+        ]);
     }
 }

@@ -79,7 +79,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/account/activate/{id}/{token}', name: 'security_activate')]
-    public function activate(User $user, string $token): void
+    public function activate(User $user, string $token): Response
     {
         if ($user->setIsActif()) {
             return $this->redirectToRoute('security_login');

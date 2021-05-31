@@ -45,11 +45,6 @@ class Project
      */
     private $messages;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=UserProject::class, mappedBy="project")
-     */
-    private $userProjects;
-
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
@@ -153,33 +148,6 @@ class Project
             if ($message->getProject() === $this) {
                 $message->setProject(null);
             }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|UserProject[]
-     */
-    public function getUserProjects(): Collection
-    {
-        return $this->userProjects;
-    }
-
-    public function addUserProject(UserProject $userProject): self
-    {
-        if (!$this->userProjects->contains($userProject)) {
-            $this->userProjects[] = $userProject;
-            $userProject->addProject($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUserProject(UserProject $userProject): self
-    {
-        if ($this->userProjects->removeElement($userProject)) {
-            $userProject->removeProject($this);
         }
 
         return $this;

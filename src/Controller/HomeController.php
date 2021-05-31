@@ -13,14 +13,7 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(): Response
     {
-        $user = $this->getUser() ?? new User();
-
-        $registerForm = $this->createForm(RegisterType::class, $user, [
-            'action' => $this->generateUrl('security_register'),
-        ]);
-
         return $this->render('home/index.html.twig', [
-            'registerForm' => $registerForm->createView(),
         ]);
     }
 }

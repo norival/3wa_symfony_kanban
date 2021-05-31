@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegisterType;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +17,7 @@ class SecurityController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $em,
+        private FileUploader $fileUploader,
         private UserPasswordEncoderInterface $passwordEncoder
     ) {
     }
@@ -34,6 +36,12 @@ class SecurityController extends AbstractController
             ));
 
             $user->setIsActif(false);
+
+            $profilePicture = $form->get('profilePicture')->getData();
+            if ($profilePicture) {
+                $filename = $this->fileUploader->upload($profilePicture);
+                $user->setProfilePicture($filename);
+            }
 
             $this->em->persist($user);
             $this->em->flush();

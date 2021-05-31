@@ -94,12 +94,23 @@ class User implements UserInterface
      */
     private $activationToken;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Project::class, mappedBy="admin")
+     */
+    private $adminProjects;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Project::class, mappedBy="users")
+     */
+    private $userProjects;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
         $this->assignedTasks = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->adminProjects = new ArrayCollection();
         $this->userProjects = new ArrayCollection();
     }
 
@@ -387,6 +398,63 @@ class User implements UserInterface
     public function setActivationToken(?string $activationToken): self
     {
         $this->activationToken = $activationToken;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Project[]
+     */
+    public function getProjects(): Collection
+    {
+        return $this->adminProjects;
+    }
+
+    public function addProject(Project $project): self
+    {
+        if (!$this->adminProjects->contains($project)) {
+            $this->adminProjects[] = $project;
+            $project->setAdmin($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): self
+    {
+        if ($this->adminProjects->removeElement($project)) {
+            // set the owning side to null (unless already changed)
+            if ($project->getAdmin() === $this) {
+                $project->setAdmin(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Project[]
+     */
+    public function getUserProjects(): Collection
+    {
+        return $this->userProjects;
+    }
+
+    public function addUserProject(Project $userProject): self
+    {
+        if (!$this->userProjects->contains($userProject)) {
+            $this->userProjects[] = $userProject;
+            $userProject->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserProject(Project $userProject): self
+    {
+        if ($this->userProjects->removeElement($userProject)) {
+            $userProject->removeUser($this);
+        }
 
         return $this;
     }

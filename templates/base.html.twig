@@ -32,6 +32,14 @@
                                 </li>
                             {% endif %}
                         </ul>
+                        {% if app.user %}
+                            <div id="profile-picture">
+                                <a href="#">
+                                    <span>{{ app.user.username }}</span>
+                                    <img src="{{ asset('uploads/profile-pictures/' ~ app.user.profilePicture) }}" alt="">
+                                </a>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </header>

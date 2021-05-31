@@ -14,11 +14,15 @@ class ProjectFixture extends Fixture implements DependentFixtureInterface
         $project = new Project();
         $project->setTitle('Trouver le Graal');
         $project->setDescription('Il faut trouver le Graal pour Arthur !');
+        $project->setAdmin($this->getReference(UserFixtures::USER_PERCEVAL));
+        $project->addUser($this->getReference(UserFixtures::USER_LANCELOT));
         $manager->persist($project);
 
         $project = new Project();
         $project->setTitle('Séduire Gueunièvre');
         $project->setDescription('Je dois voler Gueunièvre à Arthur');
+        $project->setAdmin($this->getReference(UserFixtures::USER_LANCELOT));
+        $project->addUser($this->getReference(UserFixtures::USER_PERCEVAL));
         $manager->persist($project);
 
         $manager->flush();

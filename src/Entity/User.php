@@ -24,7 +24,6 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\Unique
      */
     private $email;
 
@@ -40,12 +39,12 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=60)
+     * @ORM\Column(type="string", length=60, nullable=true)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=60)
+     * @ORM\Column(type="string", length=60, nullable=true)
      */
     private $firstname;
 
@@ -88,6 +87,11 @@ class User implements UserInterface
      * @ORM\ManyToMany(targetEntity=UserProject::class, mappedBy="user")
      */
     private $userProjects;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
 
     public function __construct()
     {
@@ -377,6 +381,18 @@ class User implements UserInterface
         if ($this->userProjects->removeElement($userProject)) {
             $userProject->removeUser($this);
         }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

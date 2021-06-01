@@ -4,6 +4,11 @@
 
 {% block body %}
     <div class="container">
+        {% if app.request.get('_route') == 'project_new' %}
+            <h1>Créer un projet</h1>
+        {% else %}
+            <h1>Modifier un projet</h1>
+        {% endif %}
         {{ form(form) }}
     </div>
 {% endblock %}

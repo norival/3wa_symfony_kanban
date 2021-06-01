@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tags{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% if app.request.get('_route') == 'tag_new' %}
+            <h1>Créer un tag</h1>
+        {% else %}
+            <h1>Modifier un tag</h1>
+        {% endif %}
+        {{ form(form) }}
+    </div>
+{% endblock %}

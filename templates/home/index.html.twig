@@ -6,7 +6,30 @@
     <div class="container">
         <h1>Bienvenue sur la page d'accueil !</h1>
         {% if app.user %}
-            <a href="{{ path('project_list') }}">Projets</a>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for project in projects %}
+                        <tr>
+                            <td>
+                                {{ project.title }}
+                            </td>
+                            <td>
+                                {{ project.description }}
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-primary" href="{{ path('project_show', {slug: project.slug}) }}">Voir</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         {% endif %}
     </div>
 {% endblock %}

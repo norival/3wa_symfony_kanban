@@ -1,0 +1,28 @@
+#board {
+    height: 700px;
+}
+
+.boardElement {
+    border: 1px solid darkgray;
+    border-radius: 5px;
+    overflow: hidden;
+
+    h2 {
+        margin: 0;
+        padding: 7px;
+        border-bottom: 1px solid darkgray;
+    }
+
+    .content {
+        padding: 7px;
+        overflow-y: auto;
+    }
+
+    .task {
+        border: 1px solid darkgray;
+        border-radius: 5px;
+        margin-top: 15px;
+        padding: 10px;
+        background-color: lighten(#1f1f1f, 10);
+    }
+}

@@ -1,3 +1,8 @@
+#body {
+    background-color: #1f1f1f;
+    color: darken(white, 14);
+}
+
 #profile-picture {
     img {
         width: 40px;
@@ -7,6 +12,11 @@
 
 .blockLink {
     text-decoration: none;
+    color: inherit;
+
+    &:hover {
+        color: inherit;
+    }
 }
 
 .itemList {

@@ -29,13 +29,19 @@
             </ul>
         </div>
         <div id="board">
-            <div class="row">
+            <div class="row h-100 align-items-stretch">
                 {% for key,status in statuses %}
-                    <div class="boardElement col-12 col-md-6 col-lg-4">
-                        <h2>{{ key }}</h2>
-                        {% for task in project.tasks|filter(t => t.status == status) %}
-                            {{ include('task/_task.html.twig') }}
-                        {% endfor %}
+                    <div class="col-12 col-md-6 col-lg-4 h-100">
+                        <div class="boardElement h-100">
+                            <div class="header">
+                                <h2>{{ key }}</h2>
+                            </div>
+                            <div class="content h-100">
+                                {% for task in project.tasks|filter(t => t.status == status) %}
+                                    {{ include('task/_task.html.twig') }}
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
                 {% endfor %}
             </div>

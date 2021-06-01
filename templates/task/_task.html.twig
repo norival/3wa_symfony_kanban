@@ -1,18 +1,20 @@
 <div class="task">
-    <h3>{{ task.title }}</h3>
-    <p>{{ task.content }}</p>
-    {% if task.tags | length > 0 %}
-        <div>
-            <ul class="itemList tagList">
-                {% for tag in task.tags %}
-                    <li class="tag" style="background-color: {{ tag.color }}">
-                        {{ tag.title }}
+    <a class="blockLink taskLink" href="{{ path('task_show', {project_slug: project.slug, id: task.id}) }}">
+        <h3>{{ task.title }}</h3>
+        <p>{{ task.content }}</p>
+        {% if task.tags | length > 0 %}
+            <div>
+                <ul class="itemList tagList">
+                    {% for tag in task.tags %}
+                        <li class="tag" style="background-color: {{ tag.color }}">
+                            {{ tag.title }}
+                        </li>
+                    {% endfor %}
+                    <li>
+                        <button class="" href="#">+</button>
                     </li>
-                {% endfor %}
-                <li>
-                    <a class="" href="#">+</a>
-                </li>
-            </ul>
-        </div>
-    {% endif %}
+                </ul>
+            </div>
+        {% endif %}
+    </a>
 </div>

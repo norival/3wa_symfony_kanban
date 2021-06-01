@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container">
-        <h1>Mon compte</h1>
+        <h1>Bienvenue, {{ user }}</h1>
         <div class="row">
             <div class="col-12 col-md-6">
                 <h2>Mes projets</h2>
@@ -12,10 +12,12 @@
                     <a class="btn btn-sm btn-success" href="{{ path('project_new') }}">Créer un projet</a>
                 </div>
                 {% for project in user.projects %}
-                    <div class="projectPreview">
-                        <h3>{{ project.title }}</h3>
-                        <p class="description">{{ project.description }}</div>
-                    </div>
+                    <a class="d-bock blockLink" href="{{ path('project_show', {slug: project.slug}) }}">
+                        <div class="projectPreview">
+                            <h3>{{ project.title }}</h3>
+                            <p class="description">{{ project.description }}</div>
+                        </div>
+                    </a>
                 {% endfor %}
             </div>
         </div>

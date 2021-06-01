@@ -7,16 +7,16 @@
         <h1>{{ project.title }}</h1>
         <p>{{ project.description }}</p>
         <div class="projectActions">
-            <div class="row">
-                <div class="col-12 col-md-3">
+            <ul class="actionList">
+                <li>
+                    <a href="{{ path('project_edit', {slug: project.slug}) }}"
+                       class="btn btn-sm btn-primary">Editer le projet</a>
+                </li>
+                <li>
                     <a href="{{ path('task_new', {slug: project.slug}) }}"
                        class="btn btn-sm btn-success">Ajouter une tâche</a>
-                </div>
-                <div class="col-12 col-md-3">
-                    <a href="{{ path('task_new', {slug: project.slug}) }}"
-                       class="btn btn-sm btn-success">Ajouter une tâche</a>
-                </div>
-            </div>
+                </li>
+            </ul>
         </div>
         <div id="board">
             <div class="row">

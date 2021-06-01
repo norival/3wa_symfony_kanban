@@ -4,3 +4,17 @@
         height: auto;
     }
 }
+
+.blockLink {
+    text-decoration: none;
+}
+
+.actionList {
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+
+    li + li {
+        margin-left: 10px;
+    }
+}

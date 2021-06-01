@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[IsGranted('ROLE_USER')]
 class AccountController extends AbstractController
 {
     public function __construct(
@@ -19,7 +20,6 @@ class AccountController extends AbstractController
     ) { }
 
     #[Route('/account', name: 'account')]
-    #[IsGranted('ROLE_USER')]
     public function index(): Response
     {
         /** @var \App\Entity\User $user */

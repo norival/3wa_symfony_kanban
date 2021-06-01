@@ -71,11 +71,6 @@ class ProjectController extends AbstractController
     {
         $tasks = $project->getTasks();
 
-        $task = new Task();
-        $form = $this->createForm(TaskType::class, $task, [
-            'action' => $this->generateUrl('task_new', ['slug' => $project->getSlug()]),
-        ]);
-
         $statuses = [
             'A faire'  => Task::STATUS_TODO,
             'En cours' => Task::STATUS_ONGOING,
@@ -83,7 +78,6 @@ class ProjectController extends AbstractController
         ];
 
         return $this->render('project/show.html.twig', [
-            'form'     => $form->createView(),
             'statuses' => $statuses,
             'project'  => $project,
             'tasks'    => $tasks,

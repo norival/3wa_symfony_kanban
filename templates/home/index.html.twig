@@ -6,6 +6,9 @@
     <div class="container">
         <h1>Bienvenue sur la page d'accueil !</h1>
         {% if app.user %}
+            <div class="count">
+                {{ pagination.getTotalItemCount }}
+            </div>
             <table class="table">
                 <thead>
                     <tr>
@@ -15,7 +18,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for project in projects %}
+                    {% for project in pagination %}
                         <tr>
                             <td>
                                 {{ project.title }}
@@ -31,5 +34,8 @@
                 </tbody>
             </table>
         {% endif %}
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
     </div>
 {% endblock %}

@@ -1,5 +1,15 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('app-projects') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('app-projects') }}
+{% endblock %}
+
 {% block title %}Hello ProjectController!{% endblock %}
 
 {% block body %}

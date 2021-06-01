@@ -12,20 +12,22 @@
                     <a href="{{ path('task_new', {slug: project.slug}) }}"
                        class="btn btn-sm btn-success">Ajouter une tâche</a>
                 </div>
+                <div class="col-12 col-md-3">
+                    <a href="{{ path('task_new', {slug: project.slug}) }}"
+                       class="btn btn-sm btn-success">Ajouter une tâche</a>
+                </div>
             </div>
         </div>
         <div id="board">
             <div class="row">
-                <div class="col-12 col-md-3">
-                    {% for key,status in statuses %}
-                        <div class="boardElement">
-                            <h2>{{ key }}</h2>
-                            {% for task in project.tasks|filter(t => t.status == status) %}
-                                {{ include('task/_task.html.twig') }}
-                            {% endfor %}
-                        </div>
-                    {% endfor %}
-                </div>
+                {% for key,status in statuses %}
+                    <div class="boardElement col-12 col-md-6 col-lg-4">
+                        <h2>{{ key }}</h2>
+                        {% for task in project.tasks|filter(t => t.status == status) %}
+                            {{ include('task/_task.html.twig') }}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </div>

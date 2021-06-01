@@ -7,11 +7,27 @@
         <h1>{{ project.title }}</h1>
         <p>{{ project.description }}</p>
         <div class="projectActions">
-            <ul>
-                <li>
-                    <a href=""></a>
-                </li>
-            </ul>
+            <div class="row">
+                <div class="col-12 col-md-3">
+                    {{ form_start(form) }}
+                    <input type="hidden" name="project" value="{{ project.id }}">
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+        <div id="board">
+            <div class="row">
+                <div class="col-12 col-md-3">
+                    {% for key,status in statuses %}
+                        <div class="boardElement">
+                            <h2>{{ key }}</h2>
+                            {% for task in project.tasks|filter(t => t.status == status) %}
+                                {{ include('../task/_task.html.twig') }}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

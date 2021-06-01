@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Project;
+use App\Entity\Task;
+use App\Form\TaskType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,7 +22,7 @@ class ProjectController extends AbstractController
         $userProjects = $user->getUserProjects();
 
         return $this->render('project/index.html.twig', [
-            'projects' => $projects,
+            'projects'     => $projects,
             'userProjects' => $userProjects,
         ]);
     }
@@ -31,9 +33,22 @@ class ProjectController extends AbstractController
     {
         $tasks = $project->getTasks();
 
+        $task = new Task();
+        $form = $this->createForm(TaskType::class, $task, [
+            'action' => $this->generateUrl('task_new', ['project_slug' => $project->getSlug()]),
+        ]);
+
+        $statuses = [
+            'A faire'  => Task::STATUS_TODO,
+            'En cours' => Task::STATUS_ONGOING,
+            'Terminé'  => Task::STATUS_DONE,
+        ];
+
         return $this->render('project/show.html.twig', [
-            'project' => $project,
-            'tasks' => $tasks,
+            'form'     => $form->createView(),
+            'statuses' => $statuses,
+            'project'  => $project,
+            'tasks'    => $tasks,
         ]);
     }
 }

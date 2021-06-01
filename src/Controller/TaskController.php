@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,16 +26,22 @@ class TaskController extends AbstractController
         ]);
     }
 
-    #[Route('/task/{project_slug}/new', name: 'task_new')]
-    #[Route('/task/edit/{id}', name: 'task_edit')]
-    #[ParamConverter('project', options: ['mapping' => ['project_slug' => 'slug']])]
-    public function new(ProjectRepository $projectRepository, Project $project = null, Task $task = null): Response
+    #[Route('/project/{project_slug}/task/new', name: 'task_new')]
+    #[ParamConverter(
+        [
+            'value' => 'project',
+            'class' => Project::class,
+            'options' => ['mapping'=>['project_slug' => 'slug']]
+        ]
+    )]
+    public function new(Request $request, Project $project, ProjectRepository $projectRepository, Task $task = null): Response
     {
         if (!$task) {
             $task = new Task();
         }
 
         $form = $this->createForm(TaskType::class, $task);
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /* $project = $projectRepository->find($form->get('project')->getData()); */
             $task->setProject($project);

@@ -35,7 +35,7 @@ class ProjectController extends AbstractController
 
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task, [
-            'action' => $this->generateUrl('task_new', ['project_slug' => $project->getSlug()]),
+            'action' => $this->generateUrl('task_new', ['slug' => $project->getSlug()]),
         ]);
 
         $statuses = [

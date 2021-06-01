@@ -26,27 +26,17 @@ class TaskController extends AbstractController
         ]);
     }
 
-    #[Route('/project/{project_slug}/task/new', name: 'task_new')]
-    #[ParamConverter(
-        [
-            'value' => 'project',
-            'class' => Project::class,
-            'options' => ['mapping'=>['project_slug' => 'slug']]
-        ]
-    )]
-    public function new(Request $request, Project $project, ProjectRepository $projectRepository, Task $task = null): Response
+    #[Route('/project/{slug}/task/new', name: 'task_new')]
+    public function new(Request $request, Project $project): Response
     {
-        if (!$task) {
-            $task = new Task();
-        }
-
+        $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /* $project = $projectRepository->find($form->get('project')->getData()); */
             $task->setProject($project);
 
-            $this->em->persist($project);
+            $this->em->persist($task);
             $this->em->flush();
 
             return $this->redirectToRoute('project_show', ['project_slug' => $project->getSlug()]);

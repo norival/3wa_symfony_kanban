@@ -1,4 +1,18 @@
 <div class="task">
     <h3>{{ task.title }}</h3>
     <p>{{ task.content }}</p>
+    {% if task.tags | length > 0 %}
+        <div>
+            <ul class="itemList tagList">
+                {% for tag in task.tags %}
+                    <li class="tag" style="background-color: {{ tag.color }}">
+                        {{ tag.title }}
+                    </li>
+                {% endfor %}
+                <li>
+                    <a class="" href="#">+</a>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
 </div>

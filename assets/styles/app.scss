@@ -9,15 +9,19 @@
     text-decoration: none;
 }
 
-.actionList {
+.itemList {
     list-style: none;
     padding-left: 0;
     display: flex;
 
     li + li {
+        display: inline-block;
         margin-left: 10px;
     }
 }
+
+// .actionList {
+// }
 
 .tagColor {
     display: inline-block;
@@ -25,4 +29,13 @@
     height: 20px;
     border: 1px solid black;
     border-radius: 3px;
+}
+
+.tagList {
+    .tag {
+        flex: 0 0;
+        font-size: 0.8em;
+        padding: 0 16px;
+        border-radius: 8px;
+    }
 }

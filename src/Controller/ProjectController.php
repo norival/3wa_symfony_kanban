@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Entity\Task;
+use App\Form\ProjectType;
 use App\Form\TaskType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProjectController extends AbstractController
 {
+    public function __construct(
+        private EntityManagerInterface $em
+    ) { }
+
     #[Route('/project', name: 'project_list')]
     #[IsGranted('ROLE_USER')]
     public function index(): Response
@@ -29,10 +35,33 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/project/new', name: 'project_new')]
+    #[Route('/project/{slug}/new', name: 'project_edit')]
     #[IsGranted('ROLE_USER')]
-    public function new(Request $request): Response
+    public function new(Request $request, Project $project = null): Response
     {
-        return $this->render('project/new.html.twig', [
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+
+        if (!$project) {
+            $project = new Project();
+        }
+
+        $form = $this->createForm(ProjectType::class, $project);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $project->setAdmin($user);
+
+            $this->em->persist($project);
+            $this->em->flush();
+
+            return $this->redirectToRoute('project_show', [
+                'slug' => $project->getSlug(),
+            ]);
+        }
+
+        return $this->render('project/edit.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 

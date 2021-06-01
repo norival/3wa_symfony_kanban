@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ProjectController extends AbstractController
 {
@@ -41,6 +42,10 @@ class ProjectController extends AbstractController
     {
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
+
+        if ($project && $project->getAdmin() !== $user) {
+            throw new AccessDeniedException('Vous ne pouvez pas modifier un projet qui ne vous appartient pas');
+        }
 
         if (!$project) {
             $project = new Project();
@@ -76,11 +81,14 @@ class ProjectController extends AbstractController
             'En cours' => Task::STATUS_ONGOING,
             'Terminé'  => Task::STATUS_DONE,
         ];
+        /* dump($project->isUserInProject($this->getUser())); */
+        dump($project->getUsers()->toArray());
 
         return $this->render('project/show.html.twig', [
-            'statuses' => $statuses,
-            'project'  => $project,
-            'tasks'    => $tasks,
+            'statuses'        => $statuses,
+            'project'         => $project,
+            'tasks'           => $tasks,
+            'isUserInProject' => $project->isUserInProject($this->getUser()),
         ]);
     }
 }

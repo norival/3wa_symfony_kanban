@@ -1,10 +1,25 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('app-account') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('app-account') }}
+{% endblock %}
+
 {% block title %}Mon compte{% endblock %}
 
 {% block body %}
     <div class="container">
         <h1>Bienvenue, {{ user }}</h1>
+        {% if user.profilePicture %}
+            <img src="{{ asset('uploads/profile-pictures/' ~ user.profilePicture) }}"
+                 class="profilePicture"
+                 alt="{{ user }}">
+        {% endif %}
         <ul class="itemList actionList">
             <li>
                 <a class="btn btn-sm btn-primary" href="{{ path('account_edit') }}">Modifier mon compte</a>

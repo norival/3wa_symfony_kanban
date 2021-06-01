@@ -48,4 +48,22 @@ class TaskController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/task/edit/{id}', name: 'task_edit')]
+    public function edit(Request $request, Task $task): Response
+    {
+        $form = $this->createForm(TaskType::class, $task);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->persist($task);
+            $this->em->flush();
+
+            return $this->redirectToRoute('project_show', ['slug' => $task->getProject()->getSlug()]);
+        }
+
+        return $this->render('task/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 }

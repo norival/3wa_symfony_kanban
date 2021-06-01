@@ -224,4 +224,11 @@ class Project
 
         return $this;
     }
+
+    public function isUserInProject(User $user): bool
+    {
+        $userIds = $this->getUsers()->map(fn($x) => $x->getId())->toArray();
+
+        return in_array($user->getId(), $userIds);
+    }
 }

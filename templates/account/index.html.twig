@@ -9,7 +9,7 @@
             <li>
                 <a class="btn btn-sm btn-primary" href="{{ path('account_edit') }}">Modifier mon compte</a>
             </li>
-            {% if is_granted('ROLE_USER') %}
+            {% if is_granted('ROLE_ADMIN') %}
                 <li>
                     <a class="btn btn-sm btn-primary" href="{{ path('tag') }}">Gérer les tags</a>
                 </li>

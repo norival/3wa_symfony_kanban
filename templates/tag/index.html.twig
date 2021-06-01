@@ -19,13 +19,14 @@
                     {% for tag in tags %}
                         <tr>
                             <td>
-                                {{ tag.name }}
+                                <div style="background-color: {{ tag.color }}" class="tagColor"></div>
+                                {{ tag.title }}
                             </td>
                             <td>
                                 {{ tag.description }}
                             </td>
                             <td>
-                                <a class="btn btn-sm btn-primary" href="{{ path('task_edit', {id: tag.id}) }}">Voir</a>
+                                <a class="btn btn-sm btn-primary" href="{{ path('tag_edit', {id: tag.id}) }}">Modifier</a>
                             </td>
                         </tr>
                     {% endfor %}

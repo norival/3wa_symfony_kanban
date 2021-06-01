@@ -34,7 +34,7 @@
                         </ul>
                         {% if app.user %}
                             <div id="profile-picture">
-                                <a href="#">
+                                <a href="{{ path('account') }}">
                                     <span>{{ app.user.username }}</span>
                                     <img src="{{ asset('uploads/profile-pictures/' ~ app.user.profilePicture) }}" alt="">
                                 </a>

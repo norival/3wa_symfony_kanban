@@ -6,6 +6,7 @@ use App\Entity\Project;
 use App\Entity\Task;
 use App\Form\TaskType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,6 +25,14 @@ class ProjectController extends AbstractController
         return $this->render('project/index.html.twig', [
             'projects'     => $projects,
             'userProjects' => $userProjects,
+        ]);
+    }
+
+    #[Route('/project/new', name: 'project_new')]
+    #[IsGranted('ROLE_USER')]
+    public function new(Request $request): Response
+    {
+        return $this->render('project/new.html.twig', [
         ]);
     }
 

@@ -40,6 +40,11 @@ class Tag
      */
     private $tasks;
 
+    /**
+     * @ORM\Column(type="string", length=10, nullable=true)
+     */
+    private $color;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
@@ -119,5 +124,17 @@ class Tag
     public function setCreatedAtValue(): void
     {
         $this->createdAt = new \DateTimeImmutable();
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): self
+    {
+        $this->color = $color;
+
+        return $this;
     }
 }

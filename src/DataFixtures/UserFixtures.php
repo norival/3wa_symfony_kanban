@@ -11,6 +11,7 @@ class UserFixtures extends Fixture
 {
     public const USER_PERCEVAL = 'user-perceval';
     public const USER_LANCELOT = 'user-lancelot';
+    public const USER_ROOT = 'user-root';
 
     public function __construct(private UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -37,6 +38,18 @@ class UserFixtures extends Fixture
         $user->setIsActif(true);
         $user->setUsername('lancelot');
         $this->addReference(self::USER_LANCELOT, $user);
+
+        $manager->persist($user);
+
+        $user = new User();
+        $user->setName('Root');
+        $user->setFirstname('Root');
+        $user->setEmail('root@root.com');
+        $user->setPassword($this->passwordEncoder->encodePassword($user, 'password'));
+        $user->setIsActif(true);
+        $user->setUsername('root');
+        $user->setRoles(['ROLE_ADMIN']);
+        $this->addReference(self::USER_ROOT, $user);
 
         $manager->persist($user);
 

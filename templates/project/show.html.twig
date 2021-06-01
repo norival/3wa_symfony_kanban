@@ -9,9 +9,8 @@
         <div class="projectActions">
             <div class="row">
                 <div class="col-12 col-md-3">
-                    {{ form_start(form) }}
-                    <input type="hidden" name="project" value="{{ project.id }}">
-                    {{ form_end(form) }}
+                    <a href="{{ path('task_new', {slug: project.slug}) }}"
+                       class="btn btn-sm btn-success">Ajouter une tâche</a>
                 </div>
             </div>
         </div>
@@ -22,7 +21,7 @@
                         <div class="boardElement">
                             <h2>{{ key }}</h2>
                             {% for task in project.tasks|filter(t => t.status == status) %}
-                                {{ include('../task/_task.html.twig') }}
+                                {{ include('task/_task.html.twig') }}
                             {% endfor %}
                         </div>
                     {% endfor %}

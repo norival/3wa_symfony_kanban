@@ -30,6 +30,8 @@ class TaskController extends AbstractController
     public function new(Request $request, Project $project): Response
     {
         $task = new Task();
+        $task->setProject($project);
+
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
@@ -39,7 +41,11 @@ class TaskController extends AbstractController
             $this->em->persist($task);
             $this->em->flush();
 
-            return $this->redirectToRoute('project_show', ['project_slug' => $project->getSlug()]);
+            return $this->redirectToRoute('project_show', ['slug' => $project->getSlug()]);
         }
+
+        return $this->render('task/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

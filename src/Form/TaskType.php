@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Tag;
 use App\Entity\Task;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -24,6 +26,11 @@ class TaskType extends AbstractType
                     'En cours' => Task::STATUS_ONGOING,
                     'Terminé'  => Task::STATUS_DONE,
                 ],
+            ])
+            ->add('tags', EntityType::class, [
+                'class' => Tag::class,
+                'choice_label' => 'title',
+                'multiple' => true,
             ])
             ->add('submit', SubmitType::class)
         ;

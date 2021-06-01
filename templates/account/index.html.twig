@@ -5,6 +5,7 @@
 {% block body %}
     <div class="container">
         <h1>Bienvenue, {{ user }}</h1>
+        <a class="btn btn-sm btn-primary" href="{{ path('account_edit') }}">Modifier mon compte</a>
         <div class="row">
             <div class="col-12 col-md-6">
                 <h2>Mes projets</h2>

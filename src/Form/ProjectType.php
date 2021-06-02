@@ -17,6 +17,7 @@ class ProjectType extends AbstractType
             ->add('title')
             ->add('description', TextareaType::class)
             ->add('slug')
+            ->add('users')
             ->add('submit', SubmitType::class)
         ;
     }

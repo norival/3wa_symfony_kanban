@@ -1,0 +1,10 @@
+{% if projects | length > 0 %}
+    Recent projects
+    <ul>
+        {% for project in projects %}
+            <li>
+                {{ project.title }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

@@ -1,4 +1,7 @@
-<div id="task-{{ task.id }}" class="task" draggable="true">
+<div id="task-{{ task.id }}"
+     class="task"
+     draggable="true"
+     data-task-id="{{ task.id }}">
     <h3>{{ task.title }}</h3>
     <a class="btn btn-sm btn-primary" href="{{ path('task_edit', {id: task.id}) }}"><i class="far fa-edit"></i>Modifier</a>
     <p>{{ task.content }}</p>
@@ -17,7 +20,13 @@
         </div>
     {% endif %}
     <div class="statusChange">
-        <select id="status-change" name="statusChange">
+        <label for="status-change-{{ task.id }}">Changer le statut :</label>
+        <select name="statusChangeSelect"
+                id="status-change-{{ task.id }}"
+                data-task-id="{{ task.id }}"
+                data-fetch-url="{{ path('task_api_set_status', {id: task.id}) }}"
+                data-controller="statusChange"
+                data-action="statusChange#change">
             {% for key,status in statuses %}
                 <option value="{{ status }}"
                         {% if status == task.status %}selected{% endif %}>

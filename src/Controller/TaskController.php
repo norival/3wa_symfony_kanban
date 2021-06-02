@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -64,6 +65,20 @@ class TaskController extends AbstractController
 
         return $this->render('task/edit.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/api/task/status/{id}', name: 'task_api_set_status', methods: ['PATCH'])]
+    public function apiSetStatus(Request $request, Task $task): JsonResponse
+    {
+        $content = \json_decode($request->getContent(), true);
+        $task->setStatus((int) $content['status']);
+
+        $this->em->flush();
+
+        return $this->json([
+            'id' => $task->getId(),
+            'status' => $task->getStatus(),
         ]);
     }
 }

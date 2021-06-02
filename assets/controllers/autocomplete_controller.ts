@@ -19,9 +19,15 @@ export default class extends Controller {
     hasSuggestionsTarget!: boolean;
 
     fetchUrl!: string|null;
+    select!: HTMLSelectElement|null;
 
     initialize() {
         this.fetchUrl = this.element.getAttribute('data-fetch-url');
+
+        const selectId = this.element.getAttribute('data-select-id');
+        if (selectId) {
+            this.select = document.getElementById(selectId) as HTMLSelectElement|null;
+        }
     }
 
     connect() {
@@ -43,18 +49,36 @@ export default class extends Controller {
         this.suggestionsTarget.innerHTML = '';
         users.forEach(user => {
             const li = document.createElement('li');
-            const img = document.createElement('img');
-            const span = document.createElement('span');
-            li.dataset.userId = user.id;
-            span.innerText = `${user.firstname} ${user.name}`;
+            const a = document.createElement('a');
 
-            if (user.profilePicture) {
-                img.setAttribute('src', `uploads/profile-pictures/${user.profilePicture}`);
-            }
-            img.classList.add('profilePicture', 'thumbnail');
-            li.appendChild(img);
-            li.appendChild(span);
+            a.setAttribute('href', '#');
+            a.dataset.userId = user.id;
+            a.innerHTML = `
+                <img src="{{ uploads/profile-pictures/${user.profilePicture} }}" alt="...">
+                <span>${user.firstname} ${user.name}</span>
+            `;
+
+            li.appendChild(a);
             this.suggestionsTarget.append(li);
         });
+    }
+
+    selectElement(event: MouseEvent) {
+        let target = event.target as HTMLAnchorElement;
+        if (target.tagName !== 'A') {
+            const a = target.closest('a');
+            if (a) {
+                target = a;
+            }
+        }
+
+        this.select?.querySelectorAll('option').forEach(option => {
+            if (option.value === target.dataset.userId) {
+                option.setAttribute('selected', 'selected');
+            }
+        });
+
+        this.suggestionsTarget.innerHTML = '';
+        this.inputTarget.value = '';
     }
 }

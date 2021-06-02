@@ -12,8 +12,8 @@
         <div class="form-group row"
              data-controller="autocomplete"
              data-fetch-url="{{ path('project_api_search_user', {id: project.id}) }}"
-             data-target-id="project_users">
-            <label class="col-form-label col-sm-2" for="invite-user">Inviter des utilisateurs</label>
+             data-select-id="project_users">
+            <label class="col-form-label col-sm-2" for="invite-user">Ajouter des utilisateurs</label>
             <div class="col-sm-10">
                 <input class="form-control"
                        type="text"
@@ -22,7 +22,8 @@
                        data-autocomplete-target="input">
                 <div class="autocompleteContainer">
                     <div class="suggestions">
-                        <ul data-autocomplete-target="suggestions">
+                        <ul data-autocomplete-target="suggestions"
+                            data-action="click->autocomplete#selectElement">
                         </ul>
                     </div>
                 </div>

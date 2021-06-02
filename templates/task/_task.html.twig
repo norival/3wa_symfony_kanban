@@ -16,4 +16,14 @@
             </ul>
         </div>
     {% endif %}
+    <div class="statusChange">
+        <select id="status-change" name="statusChange">
+            {% for key,status in statuses %}
+                <option value="{{ status }}"
+                        {% if status == task.status %}selected{% endif %}>
+                        {{ key }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
 </div>

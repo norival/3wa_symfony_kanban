@@ -5,41 +5,65 @@ export function onDragStart(event: DragEvent) {
 
     const target = event.target as HTMLElement;
     event.dataTransfer?.setData('text/plain', target.id);
+    event.dataTransfer?.setData('text/html', target.innerHTML);
     event.dataTransfer.dropEffect = 'move';
+
+    setTimeout(() => {
+        target.classList.add('hide');
+    }, 0);
 }
 
 export function onDrop(event: DragEvent) {
-    event.preventDefault();
     document.getElementById('dropping-placeholder')?.remove();
 
     const id = event.dataTransfer?.getData('text/plain');
-    // console.log(id);
     if (!id) {
         return;
     }
-    const target = event.target as HTMLElement;
-    const draggingElement = document.getElementById(id);
-    // console.log(target);
 
-    if (!draggingElement) {
+    const target = event.target as HTMLElement;
+
+    if (target.classList.contains('.dropZone')) {
+        event.preventDefault();
+    }
+
+    const draggedElement = document.getElementById(id);
+
+    if (!draggedElement) {
         return;
     }
 
-    target.appendChild(draggingElement);
+    draggedElement.classList.remove('hide');
+
+    const dropTarget = findDropTarget(target);
+
+    if (dropTarget.adjacent) {
+        dropTarget.target?.insertBefore(draggedElement, null);
+
+        return;
+    }
+    console.log('toto');
+
+    dropTarget.target?.appendChild(draggedElement);
 }
 
 export function onDragOver(event: DragEvent) {
     const target = event.target as HTMLElement;
-    // console.log(target);
+
     if (target.classList.contains('dropZone')) {
         event.preventDefault();
     }
 }
 
 export function onDragEnter(event: DragEvent) {
+    document.getElementById('dropping-placeholder')?.remove();
+
     const target = event.target as HTMLElement;
     const id = event.dataTransfer?.getData('text/plain');
-    if (!id) {
+    const html = event.dataTransfer?.getData('text/html');
+    const dropTarget = findDropTarget(target);
+
+    if (!id || !html) {
         return;
     }
 
@@ -49,24 +73,42 @@ export function onDragEnter(event: DragEvent) {
         return;
     }
 
-    const placeholder = createPlaceholder(
-        draggedElement.getBoundingClientRect().width,
-        draggedElement.getBoundingClientRect().height
-    );
-    target.insertBefore(placeholder, null);
+    const placeholder = createPlaceholder(html);
+
+    if (dropTarget.adjacent) {
+        dropTarget.target?.insertBefore(placeholder, null);
+
+        return;
+    }
+
+    dropTarget.target?.appendChild(placeholder);
 }
 
 export function onDragLeave(event: DragEvent) {
     document.getElementById('dropping-placeholder')?.remove();
 }
 
-function createPlaceholder(width: number, height: number): Node {
+function createPlaceholder(html: string): Node {
     const placeholder = document.createElement('div');
     placeholder.id = 'dropping-placeholder';
-    placeholder.textContent = 'DROP HERE :)';
-    placeholder.style.width = `${width}px`;
-    placeholder.style.height = `${height}px`;
-    placeholder.style.border = '2px dotted red';
+    placeholder.classList.add('task', 'placeholder');
+    placeholder.innerHTML = html;
 
     return placeholder;
+}
+
+function findDropTarget(target: HTMLElement): {target: Element|null; adjacent: boolean} {
+    console.log(target);
+    let dropTarget = target.closest('.task');
+    let adjacent = true;
+
+    if (!dropTarget) {
+        dropTarget = target.closest('.boardElement .content');
+        adjacent = false
+    }
+
+    return {
+        target: dropTarget,
+        adjacent: adjacent
+    };
 }

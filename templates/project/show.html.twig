@@ -24,7 +24,7 @@
                            class="btn btn-sm btn-primary">Editer le projet</a>
                     </li>
                 {% endif %}
-                {% if isUserInProject %}
+                {% if isUserInProject or project.admin == app.user %}
                     <li>
                         <a href="{{ path('task_new', {slug: project.slug}) }}"
                            class="btn btn-sm btn-success">Ajouter une tâche</a>
@@ -40,7 +40,7 @@
                             <div class="header">
                                 <h2>{{ key }}</h2>
                             </div>
-                            <div class="content h-100">
+                            <div class="content dropZone h-100">
                                 {% for task in project.tasks|filter(t => t.status == status) %}
                                     {{ include('task/_task.html.twig') }}
                                 {% endfor %}

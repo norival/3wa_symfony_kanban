@@ -5,6 +5,27 @@
     <h3>{{ task.title }}</h3>
     <a class="btn btn-sm btn-primary" href="{{ path('task_edit', {id: task.id}) }}"><i class="far fa-edit"></i>Modifier</a>
     <p>{{ task.content }}</p>
+    <div class="taskComments mb-3">
+        <ul class="comments">
+            {% if task.comments|length > 0 %}
+                {% for comment in task.comments %}
+                    <li class="comment">
+                        {{ comment.content }}
+                    </li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+        <div class="addComment">
+            <div class="row">
+                <div class="col-12">
+                    <textarea class="formControl" name="" placeholder="Ajouter un commentaire"></textarea>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-sm btn-success">Envoyer</button>
+                </div>
+            </div>
+        </div>
+    </div>
     {% if task.tags | length > 0 %}
         <div>
             <ul class="itemList tagList">

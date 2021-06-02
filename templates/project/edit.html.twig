@@ -9,6 +9,27 @@
         {% else %}
             <h1>Modifier un projet</h1>
         {% endif %}
+        <div class="form-group row"
+             data-controller="autocomplete"
+             data-fetch-url="{{ path('project_api_search_user', {id: project.id}) }}"
+             data-target-id="project_users">
+            <label class="col-form-label col-sm-2" for="invite-user">Inviter des utilisateurs</label>
+            <div class="col-sm-10">
+                <input class="form-control"
+                       type="text"
+                       autocomplete="off"
+                       data-action="autocomplete#input"
+                       data-autocomplete-target="input">
+                <div class="autocompleteContainer">
+                    <div class="suggestions">
+                        <ul data-autocomplete-target="suggestions">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
         {{ form(form) }}
     </div>
+    <template id="autocompletion-tpl">
+    </template>
 {% endblock %}

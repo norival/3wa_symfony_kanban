@@ -21,7 +21,7 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("autocomplete")
+     * @Groups({"autocomplete", "display"})
      */
     private $id;
 
@@ -55,12 +55,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=60)
+     * @Groups({"display"})
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("autocomplete")
+     * @Groups({"autocomplete", "display"})
      */
     private $profilePicture;
 

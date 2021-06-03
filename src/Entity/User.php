@@ -76,7 +76,7 @@ class User implements UserInterface
     private $tasks;
 
     /**
-     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="assignees")
+     * @ORM\ManyToMany(targetEntity=Task::class, mappedBy="assignees")
      */
     private $assignedTasks;
 

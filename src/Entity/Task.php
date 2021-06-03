@@ -60,7 +60,7 @@ class Task
     private $tags;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="assignedTasks")
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="assignedTasks")
      */
     private $assignees;
 
@@ -176,14 +176,21 @@ class Task
         return $this;
     }
 
-    public function getAssignees(): ?User
+    public function addAssignee(User $user): self
     {
-        return $this->assignees;
+        if (!$this->assignees->contains($user)) {
+            $this->assignees[] = $user;
+            $user->addAssignedTask($this);
+        }
+
+        return $this;
     }
 
-    public function setAssignees(?User $assignees): self
+    public function removeAssignee(User $user): self
     {
-        $this->assignees = $assignees;
+        if ($this->assignees->removeElement($user)) {
+            $user->removeAssignedTask($this);
+        }
 
         return $this;
     }

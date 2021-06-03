@@ -45,4 +45,10 @@ export default class extends Controller {
         this.commentListTarget.appendChild(li);
         this.contentTarget.value = '';
     }
+
+    onInputKeydown(event: KeyboardEvent) {
+        if (event.key === 'Enter' && event.ctrlKey) {
+            this.saveComment();
+        }
+    }
 }

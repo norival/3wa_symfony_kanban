@@ -19,7 +19,7 @@ class UserType extends AbstractType
             ->add('password', PasswordType::class)
             ->add('name')
             ->add('firstname')
-            ->add('username')
+            ->add('nickname')
             ->add('profilePicture', FileType::class)
             ->add('submit', SubmitType::class)
         ;

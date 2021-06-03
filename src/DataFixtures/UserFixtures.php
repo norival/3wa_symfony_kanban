@@ -25,7 +25,7 @@ class UserFixtures extends Fixture
         $user->setEmail('perceval@galle.com');
         $user->setPassword($this->passwordEncoder->encodePassword($user, 'password'));
         $user->setIsActif(true);
-        $user->setUsername('perceval');
+        $user->setNickname('perceval');
         $this->addReference(self::USER_PERCEVAL, $user);
 
         $manager->persist($user);
@@ -36,7 +36,7 @@ class UserFixtures extends Fixture
         $user->setEmail('lancelot@dulac.ka');
         $user->setPassword($this->passwordEncoder->encodePassword($user, 'password'));
         $user->setIsActif(true);
-        $user->setUsername('lancelot');
+        $user->setNickname('lancelot');
         $this->addReference(self::USER_LANCELOT, $user);
 
         $manager->persist($user);
@@ -47,7 +47,7 @@ class UserFixtures extends Fixture
         $user->setEmail('root@root.com');
         $user->setPassword($this->passwordEncoder->encodePassword($user, 'password'));
         $user->setIsActif(true);
-        $user->setUsername('root');
+        $user->setNickname('root');
         $user->setRoles(['ROLE_ADMIN']);
         $this->addReference(self::USER_ROOT, $user);
 

@@ -31,7 +31,13 @@
     opacity: 0.4;
 }
 
-.comments {
+.commentList {
+    flex-direction: column;
+
+    li + li {
+        margin-left: 0;
+    }
+
     .username {
         font-style: italic;
         font-size: 0.8em;

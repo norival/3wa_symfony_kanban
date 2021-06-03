@@ -42,6 +42,12 @@ export default class extends Controller {
         li.classList.add('comment');
         li.textContent = comment.content;
 
+        const span = document.createElement('span');
+        span.classList.add('username');
+        span.textContent = comment.user.username;
+
+        li.appendChild(document.createElement('whitespace'));
+        li.appendChild(span);
         this.commentListTarget.appendChild(li);
         this.contentTarget.value = '';
     }

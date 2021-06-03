@@ -57,7 +57,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=60)
      * @Groups({"display"})
      */
-    private $username;
+    private $nickname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -225,9 +225,14 @@ class User implements UserInterface
         return $this;
     }
 
-    public function setUsername(string $username): self
+    public function getNickname(): string
     {
-        $this->username = $username;
+        return $this->nickname;
+    }
+
+    public function setNickname(string $nickname): self
+    {
+        $this->nickname = $nickname;
 
         return $this;
     }

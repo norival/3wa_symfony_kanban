@@ -2,6 +2,16 @@
 
 {% block title %}Hello ProjectController!{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('app-projects') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('app-projects') }}
+{% endblock %}
+
 {% block body %}
     <div class="container">
         {% if app.request.get('_route') == 'project_new' %}
@@ -18,11 +28,13 @@
                 <input class="form-control"
                        type="text"
                        autocomplete="off"
-                       data-action="autocomplete#input"
+                       data-action="autocomplete#input focusout->autocomplete#inputFocusOut focus->autocomplete#inputFocus"
                        data-autocomplete-target="input">
-                <div class="autocompleteContainer">
+                <div class="autocompleteContainer"
+                     data-autocomplete-target="suggestionsContainer">
                     <div class="suggestions">
-                        <ul data-autocomplete-target="suggestions"
+                        <ul class=""
+                            data-autocomplete-target="suggestions"
                             data-action="click->autocomplete#selectElement">
                         </ul>
                     </div>

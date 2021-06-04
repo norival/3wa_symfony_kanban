@@ -99,8 +99,11 @@ class ProjectController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function apiSearchUser(Project $project, Request $request, UserRepository $userRepository): JsonResponse
     {
+        /* $content = \json_decode($request->getContent(), true); */
+        $search = $request->get('q');
+
         // TODO select only users that are not already in the project
-        $users = $userRepository->findAll();
+        $users = $userRepository->findByName($search);
         return $this->json($users, context: ['groups' => 'autocomplete']);
     }
 }

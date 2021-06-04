@@ -13,7 +13,11 @@ export default class extends Controller {
         list: String,
     };
 
-    static targets = ['input', 'suggestions'];
+    static targets = [
+        'input',
+        'suggestions',
+        'suggestionsContainer'
+    ];
 
     inputTarget!: HTMLInputElement;
     inputTargets!: HTMLInputElement[];
@@ -22,6 +26,10 @@ export default class extends Controller {
     suggestionsTarget!: HTMLInputElement;
     suggestionsTargets!: HTMLInputElement[];
     hasSuggestionsTarget!: boolean;
+
+    suggestionsContainerTarget!: HTMLInputElement;
+    suggestionsContainerTargets!: HTMLInputElement[];
+    hasSuggestionsContainerTarget!: boolean;
 
     fetchUrl!: string|null;
     select: HTMLSelectElement|null = null;
@@ -33,6 +41,7 @@ export default class extends Controller {
         const selectId = this.element.getAttribute('data-select-id');
         if (selectId) {
             this.select = document.getElementById(selectId) as HTMLSelectElement|null;
+            this.select?.closest('.form-group')?.classList.add('hide');
         }
     }
 
@@ -52,15 +61,27 @@ export default class extends Controller {
     }
 
     renderSuggestions(users: IUser[]): void {
+        this.suggestionsContainerTarget.classList.remove('hide');
         this.suggestionsTarget.innerHTML = '';
-        users.forEach(user => {
+        users.forEach((user, index) => {
             const li = document.createElement('li');
             const a = document.createElement('a');
 
+            if (index === 0) {
+                li.classList.add('selected');
+            }
+
             a.setAttribute('href', '#');
             a.dataset.userId = user.id;
-            a.innerHTML = `
-                <img src="{{ uploads/profile-pictures/${user.profilePicture} }}" alt="...">
+            a.innerHTML = '';
+
+            if (user.profilePicture) {
+                a.innerHTML += `
+                    <img src="/uploads/profile-pictures/${user.profilePicture}" alt="...">
+                `;
+            }
+
+            a.innerHTML += `
                 <span>${user.firstname} ${user.name}</span>
             `;
 
@@ -121,5 +142,13 @@ export default class extends Controller {
                     this.suggestionsTarget.innerHTML = '';
                 })
         }
+    }
+
+    inputFocus() {
+        this.suggestionsContainerTarget.classList.remove('hide');
+    }
+
+    inputFocusOut(event: FocusEvent) {
+        this.suggestionsContainerTarget.classList.add('hide');
     }
 }

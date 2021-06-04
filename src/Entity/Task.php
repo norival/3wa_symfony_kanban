@@ -176,6 +176,11 @@ class Task
         return $this;
     }
 
+    public function getAssignees(): Collection
+    {
+        return $this->assignees;
+    }
+
     public function addAssignee(User $user): self
     {
         if (!$this->assignees->contains($user)) {

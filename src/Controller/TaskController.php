@@ -6,6 +6,7 @@ use App\Entity\Project;
 use App\Entity\Task;
 use App\Form\TaskType;
 use App\Repository\ProjectRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -80,5 +81,20 @@ class TaskController extends AbstractController
             'id' => $task->getId(),
             'status' => $task->getStatus(),
         ]);
+    }
+
+    #[Route('/api/task/{id}/add-user', name: 'task_api_add_user', methods: ['PATCH'])]
+    public function apiAddUser(Request $request, Task $task, UserRepository $userRepository): JsonResponse
+    {
+        $content = \json_decode($request->getContent(), true);
+        $user = $userRepository->find($content['user']);
+
+        if ($user) {
+            $task->addAssignee($user);
+
+            $this->em->flush();
+        }
+
+        return $this->json($user, context: ['groups' => 'display']);
     }
 }

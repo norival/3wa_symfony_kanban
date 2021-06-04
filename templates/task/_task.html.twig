@@ -3,7 +3,36 @@
      draggable="true"
      data-task-id="{{ task.id }}">
     <h3>{{ task.title }}</h3>
+    <div class="assignees">
+        Assignée à :
+        <ul class="assigneeList" data-task-id="{{ task.id }}">
+            {% for assignee in task.assignees %}
+                <li class="assignee" data-user-id="{{ assignee.id }}">
+                    {{ assignee.nickname }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
     <a class="btn btn-sm btn-primary" href="{{ path('task_edit', {id: task.id}) }}"><i class="far fa-edit"></i>Modifier</a>
+    <div class="assignPeople"
+        data-controller="autocomplete"
+        data-fetch-url="{{ path('project_api_search_user', {id: project.id}) }}">
+        <a class="btn btn-sm btn-primary" href="#"><i class="fas fa-user-edit"></i>Assigner des personnes</a>
+        <input class="form-control"
+               type="text"
+               autocomplete="off"
+               data-action="autocomplete#input"
+               data-autocomplete-target="input">
+        <div class="autocompleteContainer">
+            <div class="suggestions">
+                <ul data-autocomplete-target="suggestions"
+                    data-send-url="{{ path('task_api_add_user', {id: task.id}) }}"
+                    data-autocomplete-list-value=".assigneeList[data-task-id='{{ task.id }}']"
+                    data-action="click->autocomplete#sendElement">
+                </ul>
+            </div>
+        </div>
+    </div>
     <p>{{ task.content }}</p>
     <div class="taskComments mb-3"
          data-controller="comment"
@@ -59,9 +88,9 @@
             {% for key,status in statuses %}
                 <option value="{{ status }}"
                         {% if status == task.status %}selected{% endif %}>
-                        {{ key }}
+                            {{ key }}
                 </option>
-            {% endfor %}
+                        {% endfor %}
         </select>
     </div>
 </div>

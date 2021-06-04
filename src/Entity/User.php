@@ -303,7 +303,7 @@ class User implements UserInterface
     {
         if (!$this->assignedTasks->contains($assignedTask)) {
             $this->assignedTasks[] = $assignedTask;
-            $assignedTask->setAssignees($this);
+            $assignedTask->addAssignee($this);
         }
 
         return $this;
@@ -314,7 +314,7 @@ class User implements UserInterface
         if ($this->assignedTasks->removeElement($assignedTask)) {
             // set the owning side to null (unless already changed)
             if ($assignedTask->getAssignees() === $this) {
-                $assignedTask->setAssignees(null);
+                $assignedTask->addAssignee(null);
             }
         }
 

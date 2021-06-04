@@ -4,10 +4,15 @@ interface IUser {
     id: string;
     firstname: string;
     name: string;
+    nickname: string;
     profilePicture?: string;
 }
 
 export default class extends Controller {
+    static values = {
+        list: String,
+    };
+
     static targets = ['input', 'suggestions'];
 
     inputTarget!: HTMLInputElement;
@@ -19,7 +24,8 @@ export default class extends Controller {
     hasSuggestionsTarget!: boolean;
 
     fetchUrl!: string|null;
-    select!: HTMLSelectElement|null;
+    select: HTMLSelectElement|null = null;
+    listValue!: String;
 
     initialize() {
         this.fetchUrl = this.element.getAttribute('data-fetch-url');
@@ -80,5 +86,40 @@ export default class extends Controller {
 
         this.suggestionsTarget.innerHTML = '';
         this.inputTarget.value = '';
+    }
+
+    sendElement(event: MouseEvent) {
+        const sendUrl = this.suggestionsTarget.dataset.sendUrl;
+
+        let target = event.target as HTMLAnchorElement;
+        if (target.tagName !== 'A') {
+            const a = target.closest('a');
+            if (a) {
+                target = a;
+            }
+        }
+
+        if (sendUrl) {
+            fetch(sendUrl, {
+                method: 'PATCH',
+                body: JSON.stringify({
+                    user: target.dataset.userId,
+                }),
+            })
+                .then(response => response.json())
+                .then((user: IUser) => {
+                    const li = document.createElement('li');
+                    li.classList.add('assignee');
+
+                    li.dataset.userId = user.id;
+                    li.innerText = user.nickname;
+
+                    const list = document.querySelector(`${this.listValue}`);
+
+                    list?.appendChild(li);
+
+                    this.suggestionsTarget.innerHTML = '';
+                })
+        }
     }
 }

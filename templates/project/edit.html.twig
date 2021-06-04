@@ -48,7 +48,9 @@
                             <img src="{{ 'uploads/profile-pictures/'~user.profilePicture }}" class="profilePicture">
                         {% endif %}
                         <span class="userName">{{ user }}</span>
-                        <button class="removeUser" data-controller="hello">
+                        <button class="removeUser"
+                                data-user-id="{{ user.id }}"
+                                data-action="autocomplete#removeElement">
                             <i class="fas fa-times"></i>
                         </button>
                     </li>

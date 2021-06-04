@@ -131,13 +131,15 @@ export default class extends Controller {
             li = document.createElement('li');
             li.classList.add('userPreview');
             li.innerHTML = `
-            <img src="uploads/profile-pictures/PROFILE_PICTURE" class="profilePicture">
-            <span class="userName">${target.dataset.userDisplayName}</span>
-            <button class="removeUser" data-controller="hello">
-                <i class="fas fa-times"></i>
-            </button>
-        `;
-        this.renderSelectionTarget.appendChild(li);
+                <img src="uploads/profile-pictures/PROFILE_PICTURE" class="profilePicture">
+                <span class="userName">${target.dataset.userDisplayName}</span>
+                <button class="removeUser"
+                        data-user-id="${target.dataset.userId}"
+                        data-action="autocomplete#removeElement">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            this.renderSelectionTarget.appendChild(li);
         }
 
         this.suggestionsTarget.innerHTML = '';
@@ -217,5 +219,23 @@ export default class extends Controller {
 
             a?.dispatchEvent(new Event('click', {bubbles: true}));
         }
+    }
+
+    removeElement(event: MouseEvent) {
+        let target = event?.target as HTMLButtonElement;
+
+        if (target.tagName !== 'BUTTON') {
+            const button = target.closest('button');
+            if (button) {
+                target = button;
+            }
+        }
+        this.select?.querySelectorAll('option').forEach(option => {
+            if (option.value === target.dataset.userId) {
+                option.removeAttribute('selected');
+            }
+        });
+
+        target.closest('.userPreview')?.remove();
     }
 }

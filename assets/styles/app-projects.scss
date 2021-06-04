@@ -84,3 +84,27 @@
         }
     }
 }
+
+.userList {
+    display: flex;
+    justify-content: flex-start;
+    list-style: none;
+    margin-top: 5px;
+
+    .userPreview {
+        border: 1px solid grey;
+        padding: 5px 10px;
+        margin-right: 10px;
+        border-radius: 4px;
+
+        .userName {
+            margin-right: 8px;
+        }
+
+        .removeUser {
+            border: none;
+            background: none;
+            color: white;
+        }
+    }
+}

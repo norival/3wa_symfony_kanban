@@ -40,6 +40,20 @@
                     </div>
                 </div>
             </div>
+            <ul class="userList"
+                data-autocomplete-target="renderSelection">
+                {% for user in project.users %}
+                    <li class="userPreview">
+                        {% if user.profilePicture %}
+                            <img src="{{ 'uploads/profile-pictures/'~user.profilePicture }}" class="profilePicture">
+                        {% endif %}
+                        <span class="userName">{{ user }}</span>
+                        <button class="removeUser" data-controller="hello">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
         {{ form(form) }}
     </div>

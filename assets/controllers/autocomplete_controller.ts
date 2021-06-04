@@ -16,7 +16,8 @@ export default class extends Controller {
     static targets = [
         'input',
         'suggestions',
-        'suggestionsContainer'
+        'suggestionsContainer',
+        'renderSelection',
     ];
 
     inputTarget!: HTMLInputElement;
@@ -30,6 +31,10 @@ export default class extends Controller {
     suggestionsContainerTarget!: HTMLInputElement;
     suggestionsContainerTargets!: HTMLInputElement[];
     hasSuggestionsContainerTarget!: boolean;
+
+    renderSelectionTarget!: HTMLInputElement;
+    renderSelectionTargets!: HTMLInputElement[];
+    hasRenderSelectionTarget!: boolean;
 
     fetchUrl!: string|null;
     select: HTMLSelectElement|null = null;
@@ -87,6 +92,7 @@ export default class extends Controller {
 
             a.setAttribute('href', '#');
             a.dataset.userId = user.id;
+            a.dataset.userDisplayName = `${user.firstname} ${user.name}`;
             a.innerHTML = '';
 
             if (user.profilePicture) {
@@ -118,6 +124,19 @@ export default class extends Controller {
                 option.setAttribute('selected', 'selected');
             }
         });
+
+        // const li = this.userTemplateTarget.content.cloneNode(true);
+        // console.log(li);
+        const li = document.createElement('li');
+        li.classList.add('userPreview');
+        li.innerHTML = `
+            <img src="uploads/profile-pictures/PROFILE_PICTURE" class="profilePicture">
+            <span class="userName">${target.dataset.userDisplayName}</span>
+            <button class="removeUser" data-controller="hello">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+        this.renderSelectionTarget.appendChild(li);
 
         this.suggestionsTarget.innerHTML = '';
         this.inputTarget.value = '';

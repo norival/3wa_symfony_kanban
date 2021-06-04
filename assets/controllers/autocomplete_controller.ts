@@ -55,6 +55,15 @@ export default class extends Controller {
             throw new Error('No url found');
         }
 
+        if (this.inputTarget.value === '') {
+            this.renderSuggestions([]);
+            return;
+        }
+
+        if (this.inputTarget.value.length < 3) {
+            return;
+        }
+
         fetch(`${this.fetchUrl}?q=${this.inputTarget.value}`, {
             method: 'GET',
         })

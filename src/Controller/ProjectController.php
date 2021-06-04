@@ -104,6 +104,8 @@ class ProjectController extends AbstractController
 
         // TODO select only users that are not already in the project
         $users = $userRepository->findByName($search);
+        $users = array_filter($users, fn($user) => $user !== $project->getAdmin());
+
         return $this->json($users, context: ['groups' => 'autocomplete']);
     }
 }

@@ -153,8 +153,10 @@ export default class extends Controller {
         this.suggestionsContainerTarget.classList.remove('hide');
     }
 
-    inputFocusOut(event: FocusEvent) {
-        this.suggestionsContainerTarget.classList.add('hide');
+    inputFocusOut() {
+        setTimeout(() => {
+            this.suggestionsContainerTarget.classList.add('hide');
+        }, 500);
     }
 
     inputKeydown(event: KeyboardEvent) {
@@ -178,6 +180,12 @@ export default class extends Controller {
             this.suggestionsTarget
                 .querySelector(`[data-index='${this.selectedIndex}']`)
                 ?.classList.add('selected');
+        }
+
+        if (event.key === 'Enter') {
+            const a = this.suggestionsTarget.querySelector(`[data-index='${this.selectedIndex}'] a`);
+
+            a?.dispatchEvent(new Event('click', {bubbles: true}));
         }
     }
 }

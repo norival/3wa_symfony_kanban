@@ -35,6 +35,8 @@ export default class extends Controller {
     select: HTMLSelectElement|null = null;
     listValue!: String;
 
+    selectedIndex = 0;
+
     initialize() {
         this.fetchUrl = this.element.getAttribute('data-fetch-url');
 
@@ -69,7 +71,10 @@ export default class extends Controller {
 
             if (index === 0) {
                 li.classList.add('selected');
+                this.selectedIndex = 0;
             }
+
+            li.dataset.index = `${index}`;
 
             a.setAttribute('href', '#');
             a.dataset.userId = user.id;
@@ -150,5 +155,29 @@ export default class extends Controller {
 
     inputFocusOut(event: FocusEvent) {
         this.suggestionsContainerTarget.classList.add('hide');
+    }
+
+    inputKeydown(event: KeyboardEvent) {
+        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+
+            const suggestionsLength = this.suggestionsTarget.querySelectorAll('li').length;
+            if (event.key === 'ArrowDown') {
+                this.selectedIndex++;
+                if (this.selectedIndex >= suggestionsLength) {
+                    this.selectedIndex = 0;
+                }
+            } else {
+                this.selectedIndex--;
+                if (this.selectedIndex < 0) {
+                    this.selectedIndex = suggestionsLength - 1;
+                }
+            }
+
+            this.suggestionsTarget.querySelector('li.selected')?.classList.remove('selected');
+
+            this.suggestionsTarget
+                .querySelector(`[data-index='${this.selectedIndex}']`)
+                ?.classList.add('selected');
+        }
     }
 }

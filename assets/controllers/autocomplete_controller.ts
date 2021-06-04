@@ -125,11 +125,12 @@ export default class extends Controller {
             }
         });
 
-        // const li = this.userTemplateTarget.content.cloneNode(true);
-        // console.log(li);
-        const li = document.createElement('li');
-        li.classList.add('userPreview');
-        li.innerHTML = `
+        let li = this.renderSelectionTarget.querySelector(`li[data-user-id='${target.dataset.userId}']`);
+
+        if (!li) {
+            li = document.createElement('li');
+            li.classList.add('userPreview');
+            li.innerHTML = `
             <img src="uploads/profile-pictures/PROFILE_PICTURE" class="profilePicture">
             <span class="userName">${target.dataset.userDisplayName}</span>
             <button class="removeUser" data-controller="hello">
@@ -137,6 +138,7 @@ export default class extends Controller {
             </button>
         `;
         this.renderSelectionTarget.appendChild(li);
+        }
 
         this.suggestionsTarget.innerHTML = '';
         this.inputTarget.value = '';

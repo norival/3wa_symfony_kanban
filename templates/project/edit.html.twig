@@ -43,7 +43,7 @@
             <ul class="userList"
                 data-autocomplete-target="renderSelection">
                 {% for user in project.users %}
-                    <li class="userPreview">
+                    <li class="userPreview" data-user-id={{ user.id }}>
                         {% if user.profilePicture %}
                             <img src="{{ 'uploads/profile-pictures/'~user.profilePicture }}" class="profilePicture">
                         {% endif %}
